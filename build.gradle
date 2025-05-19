@@ -1,0 +1,45 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'org.beryx.runtime' version '1.13.0'
+}
+
+group = 'com.os.rados'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+javafx {
+    version = '17.0.2'
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+application {
+    mainClass = 'com.os.rados.Main'
+}
+
+runtime {
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    modules = ['java.base', 'java.desktop', 'javafx.controls', 'javafx.fxml']
+    launcher {
+        noConsole = true
+    }
+    jpackage {
+        // Platform-specific options
+        if (org.gradle.internal.os.OperatingSystem.current().windows) {
+            imageOptions = ['--win-console']
+            installerOptions = ['--win-per-user-install', '--win-dir-chooser', '--win-shortcut']
+        }
+    }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+}
+
+test {
+    useJUnitPlatform()
+}
