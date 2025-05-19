@@ -22,7 +22,6 @@ application {
 
 runtime {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-    modules = ['java.base', 'java.desktop', 'javafx.controls', 'javafx.fxml']
     launcher {
         noConsole = true
     }
@@ -42,4 +41,14 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+// Add this to ensure JavaFX modules are included
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ['--add-modules', 'javafx.controls,javafx.fxml']
+}
+
+// Add this to ensure JavaFX modules are included in the runtime
+tasks.withType(JavaExec) {
+    jvmArgs += ['--add-modules', 'javafx.controls,javafx.fxml']
 }
